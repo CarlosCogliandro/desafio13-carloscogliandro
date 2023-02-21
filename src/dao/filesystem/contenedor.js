@@ -1,8 +1,5 @@
 
-// PRUEBAAAAAAA
 import fs from 'fs'
-
-// let fs = require('fs');
 
 class Contenedor {
 	constructor(url) {
@@ -108,6 +105,4 @@ class Contenedor {
 
 const productos = new Contenedor('../../data/productos.json');
 
-// module.exports = Contenedor;
-
-export default Contenedor
+export default Contenedor;

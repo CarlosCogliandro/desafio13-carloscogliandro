@@ -2,7 +2,7 @@ import passport from 'passport';
 import local from 'passport-local';
 import { usersService } from '../dao/index.js';
 import { validatePassword } from '../utils/utils.js';
-import GithubStrategy from 'passport-github2;'
+import GitHubStrategy from 'passport-github2';
 
 const LocalStrategy = local.Strategy;
 
@@ -16,7 +16,7 @@ const initializeStrategies = () => {
         return done(null, user)
     }))
 
-    passport.use('github', new GithubStrategy({
+    passport.use('github', new GitHubStrategy({
         clientID: "Iv1.bcc2d73aec10ea6e",
         clientSecret: "40a688eda87cf58a376e77771e74649839ce340d",
         callbackURL: "http://localhost:8080/sessions/githubcallback"
@@ -47,6 +47,6 @@ const initializeStrategies = () => {
         const result = await usersService.getBy({ _id: id })
         done(null, result);
     })
-}
+};
 
 export default initializeStrategies;
