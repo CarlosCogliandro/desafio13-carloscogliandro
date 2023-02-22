@@ -1,50 +1,28 @@
+
 import { Router } from "express";
-import { usuarioLogueado, usuarioSinLoguear } from '../extras/index.js';
-import passport from "passport";
 
 const router = Router();
 
-router.get('/', usuarioSinLoguear, (req, res) => {
-    res.render('home', {})
+router.get('/', (req, res) => {
+    res.render('login');
 });
 
 router.get('/register', (req, res) => {
     res.render('register');
 });
 
-router.post('/register', (req, res) => {
-    passport.authenticate('register', { failureRedirect: '/error-to-sign-up' })
+router.get('/home', async (req, res) => {
+    res.render('home', { user: req.session.user });
 });
 
-router.post('/login', (req, res) => {
-    passport.authenticate('login', { failureRedirect: '/error-to-sign-up' })
+router.get('/chat', async(req, res, next)=>{
+    res.render('chat', {})
 });
 
-router.get('/login', (req, res) => {
-    res.render('login');
+router.get('/logout', (req, res) => {
+    res.render('logout', { user: req.session.user });
+    req.session.destroy();
+    console.log('Sesion finalizada');
 });
-
-router.post("/welcomeUser",usuarioSinLoguear, (req, res) => {
-    if (req.body.firstName) {
-        req.session.nombre = req.body.firstName;
-        res.redirect("/welcomeUser");
-    } else {
-        res.redirect("/");
-    }
-});
-
-router.get(`/welcomeUser`,usuarioLogueado, (req, res) => {
-    let nombre = req.session.nombre
-    req.session.cookie.expires = new Date(Date.now() + 30000)
-    res.render(`welcomeUser`, {nombre: nombre})
-})
-
-router.post('/logout', usuarioLogueado, (req, res) => {
-    let nombre = req.session.nombre
-    req.session.destroy((error) => {
-        if (error) { res.json({ status: 'Logout error', body: error }) }
-        else { res.render('logout', { nombre: nombre }) }
-    })
-})
 
 export default router;

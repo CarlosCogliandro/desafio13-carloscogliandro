@@ -1,15 +1,15 @@
 
 import fs from 'fs'
 
-class Contenedor {
-	constructor(url) {
-		this.url = url;
-		console.log("Probando---->", this.url)
+class Container {
+	constructor(route) {
+		this.route = route;
+		// console.log("Probando ---->", this.route)
 	};
 
 	async getAll() {
 		try {
-			const prod = await fs.promises.readFile(this.url, 'utf-8') || [];
+			const prod = await fs.promises.readFile(this.route, 'utf-8') || [];
 			return JSON.parse(prod)
 		} catch (error) {
 			console.log('Tenemos un error al traer los productos ----->', error);
@@ -34,7 +34,7 @@ class Contenedor {
 		const newProd = { ...prod, id: newId }
 		data.push(newProd);
 		try {
-			await fs.promises.writeFile(this.url, JSON.stringify(data, null, 2), (e, contenido) => { });
+			await fs.promises.writeFile(this.route, JSON.stringify(data, null, 2), (e, contenido) => { });
 			return newProd;
 		} catch (error) {
 			console.log('Error al guardar un nuevo producto ----->', error);
@@ -64,7 +64,7 @@ class Contenedor {
 				console.log(`No existe el objeto con id ${id}`)
 			} else {
 				const newProd = data.filter(obj => obj.id != id)
-				await fs.promises.writeFile(this.url, JSON.stringify(newProd, null, 2), (e, contenido) => { })
+				await fs.promises.writeFile(this.route, JSON.stringify(newProd, null, 2), (e, contenido) => { })
 				console.log(`Se elimino el producto con id ${id}`, prod);
 				return prod;
 			}
@@ -77,7 +77,7 @@ class Contenedor {
 		const data = await this.getAll()
 		try {
 			const newProd = []
-			await fs.promises.writeFile(this.url, JSON.stringify(newProd, null, 2), (e, contenido) => { })
+			await fs.promises.writeFile(this.route, JSON.stringify(newProd, null, 2), (e, contenido) => { })
 			console.log('Se borraron todos los productos')
 			return data;
 		} catch (error) {
@@ -95,7 +95,7 @@ class Contenedor {
 					item.thumbnail = obj.thumbnail
 				};
 			});
-			await fs.promises.writeFile(this.url, JSON.stringify(productos, null, '\t'));
+			await fs.promises.writeFile(this.route, JSON.stringify(productos, null, '\t'));
 			return productos;
 		} catch (error) {
 			console.log('Error al actualizar ----->', error);
@@ -103,6 +103,6 @@ class Contenedor {
 	};
 };
 
-const productos = new Contenedor('../../data/productos.json');
+const productos = new Container('../../data/productos.json');
 
-export default Contenedor;
+export default Container;

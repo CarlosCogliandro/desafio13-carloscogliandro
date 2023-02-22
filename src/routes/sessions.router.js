@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { createHash, validatePassword } from "../utils/utils.js";
+import { createHash, validatePassword } from "../utils.js";
 import jwt from "jsonwebtoken";
 import { usersService } from "../dao/index.js";
 

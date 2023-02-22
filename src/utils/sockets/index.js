@@ -1,21 +1,22 @@
 
-// import { Socket } from 'socket.io';
+// // import { Socket } from 'socket.io';
 // import express from 'express';
-// import { createServer } from 'http';
+// // import { createServer } from 'http';
+// import { Server as createServer } from 'http';
+// import { Server as Socket } from 'socket.io';
 
 // const app = express(); 
 // const server = createServer(app); 
-// const SocketIO = new Socket(server);
+// // const SocketIO = new Socket(server);
 
-// class SocketP {
+// export default class SocketP {
 //   static instancia;
 //   constructor(http) {
 //     if (Socket.instancia) {
 //       return Socket.instancia;
-//     }
-
+//     };
 //     Socket.instancia = this;
-//     this.io = new SocketIO(http);
+//     // this.io = new SocketIO(http);
 //     this.mensajes = [];
 //     this.usuarios = [];
 //   }
@@ -88,4 +89,24 @@
 //   }
 // }
 
-// export default SocketP;
+
+import express from 'express';
+import { Server as HttpServer } from 'http';
+import { Server as IOServer } from 'socket.io';
+
+const app = express();
+const httpServer = new HttpServer(app)
+const io = new IOServer(httpServer)
+
+io.on('connection', async socket => {
+    socket.emit('loadProducts', await Products.getAll());
+    socket.emit('loadMessages', await Messages.getAll());
+    socket.on('addProduct', async product => {
+        await Products.saveProduct(product);
+        io.emit('loadProducts', await Products.getAll());
+    })
+    socket.on('sendMessage', async message => {
+        await Messages.save(message);
+        io.emit('loadMessages', await Messages.getAll());
+    });
+});

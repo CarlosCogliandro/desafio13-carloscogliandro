@@ -1,7 +1,7 @@
 
 import express from "express";
 import session from "express-session";
-import __dirname from './src/utils/utils.js'
+import __dirname from './src/utils.js'
 // import ejs from 'ejs';
 import MongoStore from "connect-mongo";
 import passport from "passport";
@@ -15,7 +15,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Socket
-// import HttpServer from 'http'
+// import { Server as HttpServer } from 'http';
+// // import HttpServer from 'http'
 // import SocketP from "./src/utils/sockets/index.js";
 
 // Middlewares
@@ -51,8 +52,8 @@ app.use('/productos', productsRouter)
 app.use('/sessions', sessionsRouter);
 app.use('/', viewsRouter);
 
+// Inicializacion de Socket
 // const httpServer = HttpServer(app);
-
 // const socket = new SocketP(httpServer);
 // socket.init();
 
