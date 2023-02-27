@@ -2,7 +2,6 @@
 import express from "express";
 import session from "express-session";
 import __dirname from './src/utils.js'
-// import ejs from 'ejs';
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializeStrategies from "./src/config/passport.config.js";
@@ -10,9 +9,10 @@ import cartRouter from './src/routes/cart.router.js';
 import productsRouter from './src/routes/products.router.js';
 import sessionsRouter from './src/routes/sessions.router.js';
 import viewsRouter from './src/routes/views.router.js';
+import config from "./src/config/config.js";
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = config.app.PORT;
 
 // Socket
 // import { Server as HttpServer } from 'http';
@@ -22,13 +22,13 @@ const PORT = process.env.PORT || 8080;
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(`src/public`));
+app.use(express.static(`${__dirname}/public`));
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://carloscogliandro:backendcarlos@cluster0.ng7biv3.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoUrl: config.mongo.URL,
         ttl: 3600,
     }),
-    secret: 'PalabraSecretaQueNadieVea',
+    secret: config.session.SECRET2,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -43,7 +43,7 @@ app.use(passport.session())
 
 // Engine
 // app.engine('ejs', ejs.engine());
-app.set("views", `src/views`);
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "ejs");
 
 //Routers

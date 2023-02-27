@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const collection = 'messages';
+
 const messagesSchema = new mongoose.Schema({
     user_name: {
         type: String,
@@ -20,6 +22,6 @@ const messagesSchema = new mongoose.Schema({
     }
 });
 
-const messagesModel = new mongoose.model('Messages', messagesSchema);
+const messagesModel = mongoose.model(collection, messagesSchema);
 
 export default messagesModel;

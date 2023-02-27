@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
+const collection = 'products';
+
 const productsSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true
     },
@@ -9,26 +11,26 @@ const productsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    url: {
+    thumbnail: {
         type: String,
         required: true
     },
-    description: {
-        type: String,
-        required: false,
-        default: 'Alguna descripcion correcta del producto!'
-    },
-    code: {
-        type: Number,
-        required: true,
-        unique: true
-    },
-    stock: {
-        type: Number,
-        required: true
-    }
+    // description: {
+    //     type: String,
+    //     required: false,
+    //     default: 'Alguna descripcion correcta del producto!'
+    // },
+    // code: {
+    //     type: Number,
+    //     required: true,
+    //     unique: true
+    // },
+    // stock: {
+    //     type: Number,
+    //     required: true
+    // }
 });
 
-const productsModel = new mongoose.model('Products', productsSchema);
+const productsModel = mongoose.model(collection, productsSchema);
 
 export default productsModel;

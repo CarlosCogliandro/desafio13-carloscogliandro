@@ -3,6 +3,7 @@ import passport from "passport";
 import { createHash, validatePassword } from "../utils.js";
 import jwt from "jsonwebtoken";
 import { usersService } from "../dao/index.js";
+import config from '../config/config.js';
 
 const router = Router();
 
@@ -60,13 +61,13 @@ router.post('/logintoken', async (req, res) => {
         role: user.role,
         id: user._id
     }
-    const token = jwt.sign(tokenizedUser, "PalabraSecretaQueNadieVea", { expiresIn: "1d" })
+    const token = jwt.sign(tokenizedUser, config.jwt.SECRET, { expiresIn: "1d" })
     res.send({ status: "success", message: "Logueado", token })
 });
 
 router.get('/current', (req, res) => {
     const { token } = req.query;
-    const user = jwt.verify(token, "PalabraSecretaQueNadieVea");
+    const user = jwt.verify(token, config.jwt.SECRET);
     console.log(user);
     res.send({ status: "success", payload: user });
 });
